@@ -9,53 +9,46 @@
     <title>Câmbio moedas estrangeiras</title>
 </head>
 <body>
-    <h1>Câmbio de moedas</h1>
-    <form action="/buscarcotacao" method="POST" class="moedas">
-        <select name="moeda1" id="moeda1" class="form-select" aria-label="Default select example" style="width: 200px;">
-            <option value="USD">Dólar Americano</option>
-            <option value="CAD">Dólar Canadense</option>
-            <option value="AUD">Dólar Australiano</option>
-            <option value="EUR">Euro</option>
-            <option value="GBP">Libra Esterlina</option>
-            <option value="ARS">Peso Argentino</option>
-            <option value="CHF">Franco Suíço</option>
-            <option value="BRL">Real</option>
-        </select>
-        <img src="{{ url_for('static', filename='images/Exchange.png') }}" alt="Cambio" width="50px">
-        <select name="moeda2" id="moeda2" class="form-select" aria-label="Default select example" style="width: 200px;">
-            <option value="BRL">Real</option>
-            <option value="USD">Dólar Americano</option>
-            <option value="CAD">Dólar Canadense</option>
-            <option value="AUD">Dólar Australiano</option>
-            <option value="EUR">Euro</option>
-            <option value="GBP">Libra Esterlina</option>
-            <option value="ARS">Peso Argentino</option>
-            <option value="CHF">Franco Suíço</option>
-            
-        </select>
-        <input type="submit" value="Enviar">
-    </form>
+    <header>
+        <h1>Câmbio de moedas</h1>
+    </header>
+    <div class="container">
+        {% if mensagem %}
+            <div class="alert alert-danger" role="alert">
+                {{ mensagem }}
+            </div>
+        {% endif %}
+        
+        <form action="/buscarcotacao" method="POST" class="moedas">
+            <div class="moedas">
+                <select name="moeda1" id="moeda1" class="form-select" aria-label="Default select example" style="width: 200px;">
+                    <option value="USD" {% if moeda1 == 'USD' %} selected {% endif %}>Dólar Americano</option>
+                    <option value="CAD" {% if moeda1 == 'CAD' %} selected {% endif %}>Dólar Canadense</option>
+                    <option value="AUD" {% if moeda1 == 'AUD' %} selected {% endif %}>Dólar Australiano</option>
+                    <option value="EUR" {% if moeda1 == 'EUR' %} selected {% endif %}>Euro</option>
+                    <option value="GBP" {% if moeda1 == 'GBP' %} selected {% endif %}>Libra Esterlina</option>
+                    <option value="ARS" {% if moeda1 == 'ARS' %} selected {% endif %}>Peso Argentino</option>
+                    <option value="CHF" {% if moeda1 == 'CHF' %} selected {% endif %}>Franco Suíço</option>
+                    <option value="BRL" {% if moeda1 == 'BRL' %} selected {% endif %}>Real</option>
+                </select>
+                <img src="{{ url_for('static', filename='images/Exchange.png') }}" alt="Cambio" width="50px">
+                <select name="moeda2" id="moeda2" class="form-select" aria-label="Default select example" style="width: 200px;">
+                    <option value="BRL" {% if moeda2 == 'BRL' %} selected {% endif %}>Real</option>
+                    <option value="USD" {% if moeda2 == 'USD' %} selected {% endif %}>Dólar Americano</option>
+                    <option value="EUR" {% if moeda2 == 'EUR' %} selected {% endif %}>Euro</option>
+                    
+                </select>
+                <input type="submit" value="Enviar">
+            </div>
+        </form>
 
-    <br>
-    <span>Valor do dólar: </span>
-
-    <input type="text" value="{{ cifra }} {{ valormoeda }}">
-
-    <!--#USD-BRL,EUR-BRL,BTC-BRL,EUR-USD,BTC-USD,AUD-BRL,CAD-BRL,ARS-BRL,BRL-ARS,CHF-BRL,GBP-BRL-->
-
-    <form action="/processar-formulario" method="POST">
-        <label for="opcoes">Escolha uma opção:</label>
-        <select name="opcoes" id="opcoes">
-          <option value="opcao1">Opção 1</option>
-          <option value="opcao2">Opção 2</option>
-          <option value="opcao3">Opção 3</option>
-        </select>
         <br>
-        <input type="submit" value="Enviar">
-      </form>
-      
-   
+        <span>Valor convertido: </span>
 
+        <input type="text" value="{{ cifra }} {{ valormoeda }}">
+
+
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 </body>
 </html>

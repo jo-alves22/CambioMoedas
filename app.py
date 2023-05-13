@@ -28,6 +28,9 @@ def index():
 def buscarcotacao():
     moeda1 = str(request.form.get('moeda1'))
     moeda2 = str(request.form.get('moeda2'))
+    if moeda1 == moeda2:
+        mensagem = 'Selecione moedas diferentes'
+        return render_template("index.html", moeda1=moeda1, moeda2=moeda2, mensagem=mensagem)
     response = requests.get(f"https://economia.awesomeapi.com.br/last/{moeda1}-{moeda2}")
     valor = response.json()
     for item, value in valor.items():
@@ -36,7 +39,7 @@ def buscarcotacao():
             valormoeda = value['ask']
     #print(valor['EURBRL']['ask'])
     cifra = 'R$'
-    return render_template("index.html", valormoeda=valormoeda, cifra=cifra)
+    return render_template("index.html", valormoeda=valormoeda, cifra=cifra, moeda1=moeda1, moeda2=moeda2)
 
 
 if __name__ == "__main__":
