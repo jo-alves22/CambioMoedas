@@ -10,19 +10,12 @@ def index():
     print(data)
     print(data['USDBRL']['ask'])
     cifra = 'R$'
-    valormoeda = data['USDBRL']['ask']
-    return render_template("index.html", valormoeda=valormoeda, cifra=cifra)
+    cifrabase = 'US$'
+    askvalue = data['USDBRL']['ask']
+    valormoeda = askvalue.replace(".",",")
+    return render_template("index.html", valormoeda=valormoeda, cifra=cifra, cifrabase=cifrabase)
 
 #USD-BRL,EUR-BRL,BTC-BRL,EUR-USD,BTC-USD,AUD-BRL,CAD-BRL,ARS-BRL,BRL-ARS,CHF-BRL,GBP-BRL
-#https://docs.awesomeapi.com.br/api-de-moedas
-
-#response = requests.get('https://economia.awesomeapi.com.br/last/USD-BRL')
-#print(response.text)
-
-
-#response = requests.get('https://economia.awesomeapi.com.br/json/daily/USD-BRL/15')
-#print(response.text)
-
 
 @app.route('/buscarcotacao', methods=['POST'])
 def buscarcotacao():
@@ -36,10 +29,32 @@ def buscarcotacao():
     for item, value in valor.items():
         if 'ask' in value:
             print(value['ask'])
-            valormoeda = value['ask']
-    #print(valor['EURBRL']['ask'])
-    cifra = 'R$'
-    return render_template("index.html", valormoeda=valormoeda, cifra=cifra, moeda1=moeda1, moeda2=moeda2)
+            askvalue = value['ask']
+    valormoeda = askvalue.replace(".",",")
+    if moeda2 == 'BRL':
+        cifra = 'R$'
+    elif moeda2 == 'USD':
+        cifra = 'US$'
+    else:
+        cifra = '€'
+        
+    if moeda1 == 'USD':
+        cifrabase = 'US$'
+    elif moeda1 == 'CAD':
+        cifrabase = 'CAD'
+    elif moeda1 == 'AUD':
+        cifrabase = 'AUD'
+    elif moeda1 == 'EUR':
+        cifrabase = '€'
+    elif moeda1 == 'GBP':
+        cifrabase = '£'
+    elif moeda1 == 'ARS':
+        cifrabase = 'ARS'
+    elif moeda1 == 'CHF':
+        cifrabase = 'CHF'
+    else:
+        cifrabase = 'BRL'
+    return render_template("index.html", valormoeda=valormoeda, cifra=cifra, cifrabase=cifrabase, moeda1=moeda1, moeda2=moeda2)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,9 @@
 *{
     margin: auto;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #ffffff;
 }
+
 header{
     background-color: #ffffff;
     color:#335384;
@@ -16,9 +19,29 @@ header{
     display: flex;
     justify-content: space-around;
 }
+.moedas select{
+    margin-right: 20px;
+    margin-left: 20px;
+    color: #335384;
+}
+.moeda{
+    border-radius: 100px;
+}
 .container{
     width: 80%;
 }
 .container h1{
     text-align: center;
+
+}
+.valor{
+    margin-top: 30px;
+    text-align: center;
+}
+.valor input{
+    text-align: center;
+    border-color: rgb(22, 235, 22);
+    border-radius: 100px;
+    color: #335384;
+    font-size:x-large
 }
