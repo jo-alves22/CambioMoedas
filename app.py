@@ -1,34 +1,61 @@
 from flask import Flask, render_template, request
 import requests
+import matplotlib.pyplot as plt
+import os
+import datetime
 
 app = Flask(__name__)
 
 @app.route("/")
 def index():
+    responsehistory = requests.get("https://economia.awesomeapi.com.br/json/daily/USD-BRL/30")
+    history = responsehistory.json()
+    for item in history:
+        askvaluehistory = item['ask']
+        valorhistorico = askvaluehistory.replace(".",",")
+        timestamp = int(item['timestamp'])
+        print(valorhistorico)
+        datahora = datetime.datetime.fromtimestamp(timestamp)
+        date = datahora.strftime('%d-%m')
+        print(date)
+
+    #Dados da conversão do câmbio
     response = requests.get("https://economia.awesomeapi.com.br/last/USD-BRL")
     data = response.json()
-    print(data)
-    print(data['USDBRL']['ask'])
     cifra = 'R$'
     cifrabase = 'US$'
     askvalue = data['USDBRL']['ask']
-    valormoeda = askvalue.replace(".",",")
-    return render_template("index.html", valormoeda=valormoeda, cifra=cifra, cifrabase=cifrabase)
+    valormoeda = askvalue.replace(".",",") 
+    
+    # Dados para o gráfico
+    labels = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho']
+    data = [30, 20, 40, 10, 5, 60]
+    
+    return render_template("index.html", valormoeda=valormoeda, cifra=cifra, cifrabase=cifrabase, labels=labels, data=data)
 
 #USD-BRL,EUR-BRL,BTC-BRL,EUR-USD,BTC-USD,AUD-BRL,CAD-BRL,ARS-BRL,BRL-ARS,CHF-BRL,GBP-BRL
 
+@app.route('/atualizargrafico', methods=['GET'])
+def atualizargrafico():
+    responsehistory = requests.get("https://economia.awesomeapi.com.br/json/daily/USD-BRL/30")
+    history = responsehistory.json()
+    print(history)
+
 @app.route('/buscarcotacao', methods=['POST'])
 def buscarcotacao():
+    # Dados para o gráfico
+    labels = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho']
+    data = [30, 20, 40, 10, 5, 60]
+
     moeda1 = str(request.form.get('moeda1'))
     moeda2 = str(request.form.get('moeda2'))
     if moeda1 == moeda2:
         mensagem = 'Selecione moedas diferentes'
-        return render_template("index.html", moeda1=moeda1, moeda2=moeda2, mensagem=mensagem)
+        return render_template("index.html", moeda1=moeda1, moeda2=moeda2, mensagem=mensagem, labels=labels, data=data)
     response = requests.get(f"https://economia.awesomeapi.com.br/last/{moeda1}-{moeda2}")
     valor = response.json()
     for item, value in valor.items():
         if 'ask' in value:
-            print(value['ask'])
             askvalue = value['ask']
     valormoeda = askvalue.replace(".",",")
     if moeda2 == 'BRL':
@@ -37,7 +64,7 @@ def buscarcotacao():
         cifra = 'US$'
     else:
         cifra = '€'
-        
+
     if moeda1 == 'USD':
         cifrabase = 'US$'
     elif moeda1 == 'CAD':
@@ -54,7 +81,12 @@ def buscarcotacao():
         cifrabase = 'CHF'
     else:
         cifrabase = 'BRL'
-    return render_template("index.html", valormoeda=valormoeda, cifra=cifra, cifrabase=cifrabase, moeda1=moeda1, moeda2=moeda2)
+
+    # Dados para o gráfico
+    labels = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho']
+    data = [30, 20, 40, 10, 5, 60]
+
+    return render_template("index.html", valormoeda=valormoeda, cifra=cifra, cifrabase=cifrabase, moeda1=moeda1, moeda2=moeda2, labels=labels, data=data)
 
 
 if __name__ == "__main__":
