@@ -53,4 +53,18 @@ header{
 }
 canvas{
     width: 70%;
+    height: 400px;
+}
+
+@media (max-width: 991px){
+    .moedas {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    
+      .alinhamento-central {
+        text-align: center;
+        margin-bottom: 10px;
+      }
 }

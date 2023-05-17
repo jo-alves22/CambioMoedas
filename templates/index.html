@@ -21,8 +21,8 @@
             </div>
         {% endif %}
         
-        <form action="/buscarcotacao" method="POST" class="moedas">
-            <div class="moedas">
+        <form action="/buscarcotacao" method="POST" class="moedas alinhamento-central">
+            <div class="moedas alinhamento-central">
                 <select name="moeda1" id="moeda1" class="form-select moeda" aria-label="Default select example" style="width: 300px; text-transform: uppercase; border: solid 2px #335384; border-radius: 100px; font-weight: 900;">
                     <option value="USD" {% if moeda1 == 'USD' %} selected {% endif %}>Dólar Americano</option>
                     <option value="CAD" {% if moeda1 == 'CAD' %} selected {% endif %}>Dólar Canadense</option>
@@ -56,8 +56,10 @@
             <input type="text" value="{{ cifra }} {{ valormoeda }}">
         </div>
        
-       
-        <canvas id="myChart"></canvas> 
+        <div class="grafico">
+            <canvas id="myChart"></canvas>
+        </div>
+         
         
     </div>
     
@@ -80,10 +82,13 @@
 		        }]
 		    },
 		    options: {
+                responsive: true, // Torna o gráfico responsivo
+                maintainAspectRatio: false, // Permite que o gráfico se ajuste ao tamanho da tela
 		        scales: {
 		            yAxes: [{
 		                ticks: {
-		                    beginAtZero: true
+		                    beginAtZero: true,
+                            suggestedMax: 10 // Valor máximo sugerido para o eixo y
 		                }
 		            }]
 		        }
