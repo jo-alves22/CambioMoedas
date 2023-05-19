@@ -9,11 +9,11 @@ app = Flask(__name__)
 # Rota da função para obter os dados do request na página inicial
 @app.route("/")
 def index():
+
     # Dados para o gráfico
     listavalores = []
     listadatas = []
-    responsehistory = requests.get("https://economia.awesomeapi.com.br/json/daily/USD-BRL/60")
-    print(responsehistory.status_code)
+    responsehistory = requests.get(f"https://economia.awesomeapi.com.br/json/daily/USD-BRL/30")
     if responsehistory.status_code != 200:
         return render_template("serverdown.html")
     else:
@@ -39,17 +39,17 @@ def index():
             
             return render_template("index.html", valormoeda=valormoeda, cifra=cifra, cifrabase=cifrabase, labels=listadatas, data=listavalores)
 
-#USD-BRL,EUR-BRL,BTC-BRL,EUR-USD,BTC-USD,AUD-BRL,CAD-BRL,ARS-BRL,BRL-ARS,CHF-BRL,GBP-BRL
 
-
-# Rota da função para obter os dados do request quando o usuário efetuar uma busca
+# Rota da função para obter os dados do request quando o usuário selecionar outra moeda
 @app.route('/buscarcotacao', methods=['POST'])
 def buscarcotacao():
     listavalores = []
     listadatas = []
+
     # Dados da conversão do câmbio
     moeda1 = str(request.form.get('moeda1'))
     moeda2 = str(request.form.get('moeda2'))
+    periodo = str(request.form.get('periodo'))
     if moeda1 == moeda2:
         mensagem = 'Selecione moedas diferentes'
         return render_template("index.html", moeda1=moeda1, moeda2=moeda2, mensagem=mensagem, labels=listadatas, data=listavalores)
@@ -88,7 +88,7 @@ def buscarcotacao():
 
 
         # Dados para o gráfico
-        responsehistory = requests.get(f"https://economia.awesomeapi.com.br/json/daily/{moeda1}-{moeda2}/60")
+        responsehistory = requests.get(f"https://economia.awesomeapi.com.br/json/daily/{moeda1}-{moeda2}/{periodo}")
         if responsehistory.status_code != 200:
             return render_template("serverdown.html")
         else:
@@ -101,8 +101,8 @@ def buscarcotacao():
                 date = datahora.strftime('%d-%m')
                 listadatas.append(date)
 
-            return render_template("index.html", valormoeda=valormoeda, cifra=cifra, cifrabase=cifrabase, moeda1=moeda1, moeda2=moeda2, labels=listadatas, data=listavalores)
+            return render_template("index.html", valormoeda=valormoeda, cifra=cifra, cifrabase=cifrabase, moeda1=moeda1, moeda2=moeda2, labels=listadatas, data=listavalores, periodo=periodo)
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)

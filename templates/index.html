@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" href="{{ url_for('static', filename='images/currencyexchange.jpg') }}" type="image/x-icon">
     <title>Câmbio moedas estrangeiras</title>
 </head>
 <body>
@@ -20,10 +21,10 @@
                 {{ mensagem }}
             </div>
         {% endif %}
-        
+        <!--Seleção das moedas e período para busca das informações-->
         <form action="/buscarcotacao" method="POST" class="moedas alinhamento-central">
             <div class="moedas alinhamento-central">
-                <select name="moeda1" id="moeda1" class="form-select moeda" aria-label="Default select example" style="width: 300px; text-transform: uppercase; border: solid 2px #335384; border-radius: 100px; font-weight: 900;">
+                <select name="moeda1" id="moeda1" class="form-select moeda moeda-select" aria-label="Default select example" style="width: 300px; text-transform: uppercase; border: solid 2px #335384; border-radius: 100px; font-weight: 900;">
                     <option value="USD" {% if moeda1 == 'USD' %} selected {% endif %}>Dólar Americano</option>
                     <option value="CAD" {% if moeda1 == 'CAD' %} selected {% endif %}>Dólar Canadense</option>
                     <option value="AUD" {% if moeda1 == 'AUD' %} selected {% endif %}>Dólar Australiano</option>
@@ -34,37 +35,43 @@
                     <option value="BRL" {% if moeda1 == 'BRL' %} selected {% endif %}>Real</option>
                 </select>
                 <img src="{{ url_for('static', filename='images/Exchange.png') }}" alt="Cambio" width="50px">
-                <select name="moeda2" id="moeda2" class="form-select moeda" aria-label="Default select example" style="width: 300px; text-transform: uppercase; border: solid 2px #335384; border-radius: 100px; font-weight: 900;">
+                <select name="moeda2" id="moeda2" class="form-select moeda moeda-select" aria-label="Default select example" style="width: 300px; text-transform: uppercase; border: solid 2px #335384; border-radius: 100px; font-weight: 900;">
                     <option value="BRL" {% if moeda2 == 'BRL' %} selected {% endif %}>Real</option>
                     <option value="USD" {% if moeda2 == 'USD' %} selected {% endif %}>Dólar Americano</option>
                     <option value="EUR" {% if moeda2 == 'EUR' %} selected {% endif %}>Euro</option>
                     
                 </select>
-                <!--<input type="submit" value="Calcular" class="btn btn-primary">-->   
+                <select name="periodo" id="periodo" class="form-select moeda moeda-select" aria-label="Default select example" style="width: 150px; text-transform: uppercase; border: solid 2px #335384; border-radius: 100px; font-weight: 900;">
+                    <option value="30" {% if periodo == '30' %} selected {% endif %}>1 mês</option>
+                    <option value="90" {% if periodo == '90' %} selected {% endif %}>3 meses</option>
+                    <option value="180" {% if periodo == '180' %} selected {% endif %}>6 meses</option>
+                    <option value="365" {% if periodo == '365' %} selected {% endif %}>1 ano</option>
+                </select> 
             </div>
-           
-            
         </form>
-
+        <!--Valor Base-->
         <div class="valor">
             <label style="text-transform: uppercase; color: #335384; font-size: large">Valor base: </label>
             <input type="text" value="{{ cifrabase }} 1.00">
         </div>
-
+        <!--Valor Convertido-->
         <div class="valor">
             <label style="text-transform: uppercase; color: #335384; font-size: large">Valor convertido: </label>
             <input type="text" value="{{ cifra }} {{ valormoeda }}">
         </div>
-       
+      
+        <!--Gráfico-->
         <div class="grafico">
             <canvas id="myChart"></canvas>
         </div>
          
         
+        
     </div>
     
 
     <script>
+        // Script para montagem do gráfico e exibição das informações
 		var labels = {{ labels | tojson }};
 		var data = {{ data | tojson }};
 
@@ -94,16 +101,21 @@
 		        }
 		    }
 		});
-	</script>
- 
-    <script>
+
+        // Atualiza os valores na alteração da moeda selecionada
         document.getElementById("moeda1").onchange = function() {
           document.querySelector("form").submit();
         };
         document.getElementById("moeda2").onchange = function() {
           document.querySelector("form").submit();
         };
-      </script>
+        // Atualiza o gráfico conforme período selecionado
+        document.getElementById("periodo").onchange = function() {
+          document.querySelector("form").submit();
+        };
+
+	</script>  
+   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 </body>
 </html>
