@@ -24,3 +24,10 @@ meu_projeto/
 - Dentro da pasta templates/ ficam armazenadas as páginas HTML que serão exibidas no navegador.
 - No diretório static/ ficam os arquivos .css de estilização e as imagens, cada um sua respectiva subpasta.
 
+## Como rodar o projeto
+
+- Primeiramente é necessário ter o python instalado no computador. Voce pode fazer o download neste link: https://www.python.org/downloads/ (Lembre-se de habilitar o path das variáveis de ambiente durante a instalação)
+- Instalar as dependências abrindo o prompt de comando no diretório raíz do projeto e executar o seguinte comando: pip install -r requirements.txt
+- Após a instalação das dependências executar o script python do projeto com o seguinte comando: python app.py
+- No próprio terminal deve aparecer a mensagem: Running on http://127.0.0.1:5000 (Press CTRL+C to quit)
+- Copie http://127.0.0.1:5000 e cole no navegador ou digite diretamente no navegador http://localhost:5000 e o site deve abrir
