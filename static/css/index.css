@@ -17,12 +17,16 @@ header{
 }
 .moedas{
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+
 }
 .moedas select{
     margin-right: 20px;
     margin-left: 20px;
     color: #335384;
+}
+.moedas img{
+    margin: 0;
 }
 .moeda{
     border-radius: 100px;

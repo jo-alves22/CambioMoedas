@@ -22,7 +22,7 @@
             </div>
         {% endif %}
         <!--Seleção das moedas e período para busca das informações-->
-        <form action="/buscarcotacao" method="POST" class="moedas alinhamento-central">
+        <form action="/buscarcotacao" method="POST" class="">
             <div class="moedas alinhamento-central">
                 <select name="moeda1" id="moeda1" class="form-select moeda moeda-select" aria-label="Default select example" style="width: 300px; text-transform: uppercase; border: solid 2px #335384; border-radius: 100px; font-weight: 900;">
                     <option value="USD" {% if moeda1 == 'USD' %} selected {% endif %}>Dólar Americano</option>
@@ -41,25 +41,26 @@
                     <option value="EUR" {% if moeda2 == 'EUR' %} selected {% endif %}>Euro</option>
                     
                 </select>
-                <select name="periodo" id="periodo" class="form-select moeda moeda-select" aria-label="Default select example" style="width: 150px; text-transform: uppercase; border: solid 2px #335384; border-radius: 100px; font-weight: 900;">
-                    <option value="30" {% if periodo == '30' %} selected {% endif %}>1 mês</option>
-                    <option value="90" {% if periodo == '90' %} selected {% endif %}>3 meses</option>
-                    <option value="180" {% if periodo == '180' %} selected {% endif %}>6 meses</option>
-                    <option value="365" {% if periodo == '365' %} selected {% endif %}>1 ano</option>
-                </select> 
+                
             </div>
+        
+            <!--Valor Base-->
+            <div class="valor">
+                <label style="text-transform: uppercase; color: #335384; font-size: large">Valor base: </label>
+                <input type="text" name="valorbase" id="valorbase" value="{{ cifrabase }} {{ valorbase }}">
+            </div>
+            <!--Valor Convertido-->
+            <div class="valor">
+                <label style="text-transform: uppercase; color: #335384; font-size: large">Valor convertido: </label>
+                <input type="text" value="{{ cifra }} {{ valormoeda }}">
+            </div>
+            <select name="periodo" id="periodo" class="form-select moeda moeda-select" aria-label="Default select example" style="width: 150px; text-transform: uppercase; border: solid 2px #335384; border-radius: 100px; font-weight: 900;">
+                <option value="30" {% if periodo == '30' %} selected {% endif %}>1 mês</option>
+                <option value="90" {% if periodo == '90' %} selected {% endif %}>3 meses</option>
+                <option value="180" {% if periodo == '180' %} selected {% endif %}>6 meses</option>
+                <option value="365" {% if periodo == '365' %} selected {% endif %}>1 ano</option>
+            </select> 
         </form>
-        <!--Valor Base-->
-        <div class="valor">
-            <label style="text-transform: uppercase; color: #335384; font-size: large">Valor base: </label>
-            <input type="text" value="{{ cifrabase }} 1.00">
-        </div>
-        <!--Valor Convertido-->
-        <div class="valor">
-            <label style="text-transform: uppercase; color: #335384; font-size: large">Valor convertido: </label>
-            <input type="text" value="{{ cifra }} {{ valormoeda }}">
-        </div>
-      
         <!--Gráfico-->
         <div class="grafico">
             <canvas id="myChart"></canvas>
