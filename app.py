@@ -34,7 +34,7 @@ def index():
             data = response.json()
             cifra = 'R$'
             cifrabase = 'US$'
-            valorbase = '1.00'
+            valorbase = '1,00'
             askvalue = data['USDBRL']['ask']
             valormoeda = askvalue.replace(".",",") 
             
@@ -52,8 +52,8 @@ def buscarcotacao():
     moeda2 = str(request.form.get('moeda2'))
     periodo = str(request.form.get('periodo'))
     valorraw = str(request.form.get('valorbase'))
-    valorbase = valorraw.split(' ')[1]
-    print(valorbase)
+    valorbase = valorraw.split(' ')[1].replace(',','.')
+   
     if moeda1 == moeda2:
         mensagem = 'Selecione moedas diferentes'
         return render_template("index.html", moeda1=moeda1, moeda2=moeda2, mensagem=mensagem, labels=listadatas, data=listavalores)
@@ -64,8 +64,10 @@ def buscarcotacao():
         valor = response.json()
         for item, value in valor.items():
             if 'ask' in value:
-                askvalue = value['ask']
-        valormoeda = askvalue.replace(".",",")
+                valormoeda = value['ask']
+        valorconvertido = float(valorbase) * float(valormoeda)
+        valorconvertido = str(valorconvertido).replace('.',',')
+        valorbase = valorbase.replace('.',',')
         if moeda2 == 'BRL':
             cifra = 'R$'
         elif moeda2 == 'USD':
@@ -105,7 +107,7 @@ def buscarcotacao():
                 date = datahora.strftime('%d-%m')
                 listadatas.append(date)
 
-            return render_template("index.html", valormoeda=valormoeda, valorbase=valorbase, cifra=cifra, cifrabase=cifrabase, moeda1=moeda1, moeda2=moeda2, labels=listadatas, data=listavalores, periodo=periodo)
+            return render_template("index.html", valormoeda=valorconvertido, valorbase=valorbase, cifra=cifra, cifrabase=cifrabase, moeda1=moeda1, moeda2=moeda2, labels=listadatas, data=listavalores, periodo=periodo)
 
 
 if __name__ == "__main__":
