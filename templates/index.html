@@ -47,7 +47,7 @@
             <!--Valor Base-->
             <div class="valor">
                 <label style="text-transform: uppercase; color: #335384; font-size: large">Valor base: </label>
-                <input type="text" name="valorbase" id="valorbase" value="{{ cifrabase }} {{ valorbase }}" onkeydown="atualizaPagina(event)">
+                <input type="text" name="valorbase" id="valorbase" value="{{ cifrabase }} {{ valorbase }}" onkeyup="atualizaPagina(event)">
             </div>
             <!--Valor Convertido-->
             <div class="valor">
@@ -118,7 +118,7 @@
     
         //Atualiza a página ao digitar um novo valorbase para calculo da conversão
         function atualizaPagina(event) {
-            if (event.key === 'Enter') {
+            //if (event.key === 'Enter') {
                 var moeda1 = document.getElementById("moeda1").value;
                 var moeda2 = document.getElementById("moeda2").value;
                 var periodo = document.getElementById("periodo").value;
@@ -127,7 +127,7 @@
                 form.action = "/buscarcotacao"; // Define a rota para /buscarcotacao
                 form.method = "POST";
                 form.submit();
-            }
+            //}
 
             
         }

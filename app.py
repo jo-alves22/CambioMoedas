@@ -52,8 +52,12 @@ def buscarcotacao():
     moeda2 = str(request.form.get('moeda2'))
     periodo = str(request.form.get('periodo'))
     valorraw = str(request.form.get('valorbase'))
+    if valorraw == '':
+        return index()
     valorbase = valorraw.split(' ')[1].replace(',','.')
-   
+    if valorbase == '':
+        mensagem = 'Valor base inválido'
+        return render_template("index.html", moeda1=moeda1, moeda2=moeda2, mensagem=mensagem, labels=listadatas, data=listavalores)
     if moeda1 == moeda2:
         mensagem = 'Selecione moedas diferentes'
         return render_template("index.html", moeda1=moeda1, moeda2=moeda2, mensagem=mensagem, labels=listadatas, data=listavalores)
