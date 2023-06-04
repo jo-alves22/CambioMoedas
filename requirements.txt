@@ -1,4 +1,4 @@
-Flask==2.3.2
+Flask
 importlib-metadata==6.6.0
 importlib-resources==5.12.0
 Jinja2==3.1.2
