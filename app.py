@@ -55,12 +55,13 @@ def buscarcotacao():
     if valorraw == '':
         return index()
     valorbase = valorraw.split(' ')[1].replace(',','.')
-    if valorbase == '':
+    if valorbase == '' or valorbase == '0':
         mensagem = 'Valor base inválido'
         return render_template("index.html", moeda1=moeda1, moeda2=moeda2, mensagem=mensagem, labels=listadatas, data=listavalores)
     if moeda1 == moeda2:
+        valorbase = '1,00'
         mensagem = 'Selecione moedas diferentes'
-        return render_template("index.html", moeda1=moeda1, moeda2=moeda2, mensagem=mensagem, labels=listadatas, data=listavalores)
+        return render_template("index.html", valorbase=valorbase, moeda1=moeda1, moeda2=moeda2, mensagem=mensagem, labels=listadatas, data=listavalores)
     response = requests.get(f"https://economia.awesomeapi.com.br/last/{moeda1}-{moeda2}")
     if response.status_code != 200:
         return render_template("serverdown.html")
